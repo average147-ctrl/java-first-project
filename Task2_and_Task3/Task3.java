@@ -1,54 +1,53 @@
-class StringArray {
-    private String[] array;
-    private int count; // сколько элементов уже есть
+class korobkastrok {
 
-    StringArray(int size) {
-        array = new String[size];
+    private String[] stroki;
+    private int count;
+    private int totalLength;
+
+    korobkastrok(int amount) {
+        stroki = new String[amount];
         count = 0;
+        totalLength = 0;
     }
-
-    void add(String str) {
-        if (count >= array.length) {
-            String[] newArray = new String[array.length * 2];
-            for (int i = 0; i < array.length; i++) {
-                newArray[i] = array[i];
+    void add(String string) {
+        if (count == stroki.length) {
+            throw new RuntimeException("Коробка строк заполнена");
+        }
+        int cor = count;
+        for (int i = count - 1; i >= 0; i--) {
+            if (stroki[i].length() > string.length()) {
+                stroki[i + 1] = stroki[i];
+                cor = i;
+            } else {
+                break;
             }
-            array = newArray;
         }
-
-        int pos = 0;
-        while (pos < count && array[pos].length() < str.length()) {
-            pos++;
-        }
-
-        for (int i = count; i > pos; i--) {
-            array[i] = array[i - 1];
-        }
-
-        array[pos] = str;
+        stroki[cor] = string;
         count++;
+        totalLength += string.length();
     }
 
-    String getMax() {
-        if (count == 0) return null;
-        return array[count - 1]; // последняя самая длинная
-    }
-
-    double getAverageLength() {
-        if (count == 0) return 0;
-
-        int totalLength = 0;
-        for (int i = 0; i < count; i++) {
-            totalLength += array[i].length();
+    String maxLength() {
+        if (count == 0) {
+            return null;
         }
+        return stroki[count - 1];
+    }
 
+    double avgLength() {
+        if (count == 0) {
+            return 0;
+        }
         return (double) totalLength / count;
     }
-
-    void printAll() {
-        System.out.println("Все строки:");
-        for (int i = 0; i < count; i++) {
-            System.out.println((i + 1) + ". \"" + array[i] + "\" (длина: " + array[i].length() + ")");
-        }
-    }
 }
+
+
+
+//korobkastrok m = new korobkastrok(5);
+//m.add("Яблоко");
+//m.add("Банан");
+//m.add("Як");
+//
+//System.out.println(m.maxLength());
+//System.out.println(m.avgLength());
